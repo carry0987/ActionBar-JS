@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ActionBar</title>
+    <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="dist/actionBar.min.css" rel="stylesheet">
+    <style>
+    .btn:focus {
+        box-shadow: none;
+    }
+    .hide {
+        display: none !important;
+    }
+    </style>
+</head>
+<body>
+    <div class="d-flex flex-column justify-content-center align-items-center vh-100">
+        <div id="app">
+            <h1 class="mb-3">ActionBar</h1>
+        </div>
+        <div class="d-flex justify-content-center">
+            <button id="showActionBar" class="btn btn-primary me-2">Show ActionBar</button>
+            <button id="hideActionBar" class="btn btn-secondary">Hide ActionBar</button>
+        </div>
+        <div id="button" class="d-flex justify-content-center mt-1 hide">
+            <button id="enableButton" class="btn btn-primary me-2">Enable Button</button>
+            <button id="disableButton" class="btn btn-secondary">Disable Button</button>
+        </div>
+    </div>
+    <script src="dist/actionBar.min.js"></script>
+    <script type="text/javascript">
+    const actionBar = new ActionBar({
+        hideButton: ['clear', 'selectAll']
+    });
+    let showActionBar = document.querySelector('#showActionBar');
+    let hideActionBar = document.querySelector('#hideActionBar');
+    let button = document.querySelector('#button');
+    let enableButton = document.querySelector('#enableButton');
+    let disableButton = document.querySelector('#disableButton');
+    showActionBar.addEventListener('click', () => {
+        actionBar.show();
+        button.classList.remove('hide');
+    });
+    hideActionBar.addEventListener('click', () => {
+        actionBar.hide();
+        button.classList.add('hide');
+    });
+    enableButton.addEventListener('click', () => {
+        actionBar.enableButton(actionBar.getButtonList());
+    });
+    disableButton.addEventListener('click', () => {
+        actionBar.disableButton(actionBar.getButtonList());
+    });
+    actionBar.onRestore((e) => {
+        alert('Restore');
+    });
+    actionBar.onMove((e) => {
+        alert('Move');
+    });
+    actionBar.onDelete((e) => {
+        alert('Delete');
+    });
+    </script>
+</body>
+</html>
