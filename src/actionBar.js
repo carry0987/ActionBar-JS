@@ -16,6 +16,7 @@ class ActionBar {
         hideButton: [],
         template: null,
         styles: {},
+        customButton: [], // [{'name': '', 'icon': html, 'callback': function(){} }]
         onLoad: null,
         onClear: null,
         onSelectAll: null,
@@ -98,6 +99,18 @@ class ActionBar {
             if (button.delete.style.display === 'none') return;
             if (this.option?.onDelete) this.option.onDelete(button.delete);
         });
+
+        // Custom buttons
+        if (this.option?.customButton && this.option.customButton.length > 0) {
+            let buttonArea = Util.getElem('.action-buttons', this.element);
+            this.option.customButton.forEach(({name, icon, callback}) => {
+                Util.addCustomButton(name, icon, callback, buttonArea);
+                // Check if the custom button is in hideButton array
+                if (this.option?.hideButton.includes(name)) {
+                    button.style.display = 'none';
+                }
+            });
+        }
 
         return this;
     }
