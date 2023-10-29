@@ -9,7 +9,7 @@ export default {
     input: 'src/actionBar.js',
     output: [
         {
-            file: 'dist/actionBar.min.js',
+            file: pkg.main,
             format: 'umd',
             name: 'ActionBar',
             plugins: [terser()],

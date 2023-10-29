@@ -1,4 +1,5 @@
-import Util from './util';
+import Utils from '@carry0987/utils';
+import './utils-ext';
 import reportInfo from './report';
 import './actionBar.css';
 
@@ -39,32 +40,32 @@ class ActionBar {
     init(option, id) {
         let tpl, container, button = {};
         this.id = id;
-        this.option = Util.deepMerge({}, ActionBar.defaultOption, option);
-        tpl = Util.getTemplate(this.option?.template, id);
+        this.option = Utils.deepMerge({}, ActionBar.defaultOption, option);
+        tpl = Utils.getTemplate(this.option?.template, id);
 
         // Inject stylesheet
         if (this.option?.styles && Object.keys(this.option.styles).length > 0) {
-            let styles = Util.deepMerge({}, this.option.styles);
-            Util.injectStylesheet(styles, id);
+            let styles = Utils.deepMerge({}, this.option.styles);
+            Utils.injectStylesheet(styles, id);
         }
 
         // Put template to container
-        if (!Util.getElem('.action-bar-container')) {
+        if (!Utils.getElem('.action-bar-container')) {
             document.body.insertAdjacentHTML('beforeend', '<div class="action-bar-container"></div>');
         }
-        container = Util.getElem('.action-bar-container');
+        container = Utils.getElem('.action-bar-container');
         container.insertAdjacentHTML('beforeend', tpl);
-        this.element = Util.getElem('.action-bar-' + id);
+        this.element = Utils.getElem('.action-bar-' + id);
 
         // Call onLoad function
         if (this.option?.onLoad) this.option.onLoad();
 
         // Get button
-        button.clear = Util.getElem('.action-button.clear', this.element);
-        button.selectAll = Util.getElem('.action-button.selectAll', this.element);
-        button.restore = Util.getElem('.action-button.restore', this.element);
-        button.move = Util.getElem('.action-button.move', this.element);
-        button.delete = Util.getElem('.action-button.delete', this.element);
+        button.clear = Utils.getElem('.action-button.clear', this.element);
+        button.selectAll = Utils.getElem('.action-button.selectAll', this.element);
+        button.restore = Utils.getElem('.action-button.restore', this.element);
+        button.move = Utils.getElem('.action-button.move', this.element);
+        button.delete = Utils.getElem('.action-button.delete', this.element);
 
         // Hide button
         if (this.option?.hideButton && this.option.hideButton.length > 0) {
@@ -102,9 +103,9 @@ class ActionBar {
 
         // Custom buttons
         if (this.option?.customButton && this.option.customButton.length > 0) {
-            let buttonArea = Util.getElem('.action-buttons', this.element);
+            let buttonArea = Utils.getElem('.action-buttons', this.element);
             this.option.customButton.forEach(({name, icon, callback}) => {
-                Util.addCustomButton(name, icon, callback, buttonArea);
+                Utils.addCustomButton(name, icon, callback, buttonArea);
                 // Check if the custom button is in hideButton array
                 if (this.option?.hideButton.includes(name)) {
                     button.style.display = 'none';
@@ -136,7 +137,7 @@ class ActionBar {
     }
 
     updateCountNumber(count) {
-        let selectedCount = Util.getElem('.selected-count', this.element);
+        let selectedCount = Utils.getElem('.selected-count', this.element);
         let countMsg = this.option.countMsg;
         let countPlaceholder = this.option.countPlaceholder;
         if (selectedCount) {
@@ -146,12 +147,12 @@ class ActionBar {
     }
 
     enableButton(button) {
-        Util.modifyButtonState(button, false, this.element);
+        Utils.modifyButtonState(button, false, this.element);
         return this;
     }
 
     disableButton(button) {
-        Util.modifyButtonState(button, true, this.element);
+        Utils.modifyButtonState(button, true, this.element);
         return this;
     }
 
@@ -214,8 +215,8 @@ class ActionBar {
     }
 
     destroy() {
-        Util.removeStylesheet(this.id);
-        let container = Util.getElem('.action-bar-container');
+        Utils.removeStylesheet(this.id);
+        let container = Utils.getElem('.action-bar-container');
         if (container) container.removeChild(this.element.parentNode);
         ActionBar.instance.splice(this.id, 1);
         return this;
