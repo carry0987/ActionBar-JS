@@ -1,5 +1,8 @@
 import Utils from '@carry0987/utils';
 
+Utils.setStylesheetId = 'actionbar-style';
+Utils.setReplaceRule('.action-bar', '.action-bar-');
+
 Utils.getTemplate = function(tpl, id) {
     let html = `
     <div style="display:none">
