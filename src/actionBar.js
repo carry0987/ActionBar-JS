@@ -1,5 +1,4 @@
-import Utils from '@carry0987/utils';
-import './utils-ext';
+import Utils from './utils-ext';
 import reportInfo from './report';
 import './actionBar.css';
 

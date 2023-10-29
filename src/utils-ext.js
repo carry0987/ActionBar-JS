@@ -78,3 +78,5 @@ Utils.addCustomButton = function(name, icon, callback, buttonArea) {
         callback(button);
     });
 }
+
+export default Utils;
