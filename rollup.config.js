@@ -1,4 +1,4 @@
-import terser from "@rollup/plugin-terser";
+import terser from '@rollup/plugin-terser';
 import postcss from 'rollup-plugin-postcss';
 import replace from '@rollup/plugin-replace';
 import { createRequire } from 'module';
