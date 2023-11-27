@@ -1,6 +1,6 @@
 {
   "name": "@carry0987/action-bar",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "A library for create flat-styled float ActionBar, with selection count, and more",
   "type": "module",
   "main": "dist/actionBar.min.js",
@@ -29,11 +29,11 @@
   },
   "homepage": "https://github.com/carry0987/ActionBar-JS#readme",
   "devDependencies": {
-    "@carry0987/utils": "^2.1.9",
+    "@carry0987/utils": "^3.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-replace": "^5.0.5",
     "@rollup/plugin-terser": "^0.4.4",
-    "rollup": "^4.2.0",
+    "rollup": "^4.6.0",
     "rollup-plugin-postcss": "^4.0.2"
   }
 }
