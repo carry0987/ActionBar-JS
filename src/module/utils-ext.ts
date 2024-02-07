@@ -1,14 +1,30 @@
-import { domUtils, errorUtils, setStylesheetId, setReplaceRule, deepMerge, injectStylesheet, removeStylesheet } from '@carry0987/utils';
+import {
+    getElem,
+    createElem,
+    throwError,
+    setStylesheetId,
+    setReplaceRule,
+    isEmpty,
+    deepMerge,
+    generateRandom,
+    injectStylesheet,
+    removeStylesheet,
+} from '@carry0987/utils';
 
 class Utils {
     static setStylesheetId = setStylesheetId;
     static setReplaceRule = setReplaceRule;
+    static isEmpty = isEmpty;
     static deepMerge = deepMerge;
+    static generateRandom = generateRandom;
     static injectStylesheet = injectStylesheet;
     static removeStylesheet = removeStylesheet;
-    static getElem = domUtils.getElem;
+    static getElem = getElem;
+    static createElem = createElem;
+    static throwError = throwError;
 
-    static getTemplate = function(tpl, id) {
+    static getTemplate = function(id: number | string, tpl?: string | Element): string {
+        id = id.toString();
         let html = `
         <div style="display:none">
             <div class="action-bar action-bar-${id}">
@@ -45,38 +61,49 @@ class Utils {
         </div>
         `;
         if (tpl) {
-            let template = domUtils.getElem(tpl);
-            if (!template || template.length === 0) errorUtils.throwError('Template not found');
+            let template = getElem(tpl);
+            if (!template) throwError('Template not found');
             html = `<div style="display:none"><div class="action-bar action-bar-${id}">`;
             html += template.innerHTML;
             html += `</div></div>`;
         }
-    
+
         return html;
     }
-    
-    static modifyButtonState = function(buttons, state, element) {
+
+    static modifyButtonState(buttons: string | Array<string>, state: boolean, element: Element | null) {
+        if (!element) return;
         // Check if buttons is an array otherwise convert it to an array
         buttons = Array.isArray(buttons) ? buttons : [buttons];
-        buttons.forEach((value) => {
-            let actionButton = domUtils.getElem('.action-button.' + value, element) || null;
-            if (actionButton) actionButton.disabled = state;
+        buttons.forEach((buttonSelector) => {
+            let actionButton = getElem<HTMLButtonElement>('.action-button.' + buttonSelector, element);
+            if (actionButton) this.toggleDisableStatus(actionButton, state);
         });
     }
-    
+
+    static toggleDisableStatus(ele: HTMLButtonElement, disabled: boolean): void {
+        if (disabled) {
+            ele.disabled = true;
+            ele.setAttribute('disabled', 'disabled');
+        } else {
+            ele.disabled = false;
+            ele.removeAttribute('disabled');
+        }
+    }
+
     /**
      * Add custom button
      *
      * @param {string} name Name of button
      * @param {string} icon Icon of button
      * @param {function} callback Callback function to be called on clicking the button
-     * @returns this
+     * @returns HTMLButtonElement
      */
-    static addCustomButton = function(name, icon, callback, buttonArea) {
+    static addCustomButton(name: string, icon: string, callback: Function, buttonArea: Element): HTMLButtonElement {
         if (typeof callback !== 'function') {
-            errorUtils.throwError('callback should be a function');
+            throwError('callback should be a function');
         }
-        const button = domUtils.createElem('button');
+        const button = createElem('button');
         button.className = `action-button custom ${name}`;
         button.title = name;
         button.innerHTML = icon;
@@ -85,6 +112,8 @@ class Utils {
             if (button.style.display === 'none') return;
             callback(button);
         });
+
+        return button;
     }
 }
 
