@@ -298,12 +298,12 @@ styleInject(css_248z);
 
 class ActionBar {
     static instances = [];
-    static version = '2.0.0';
+    static version = '2.0.1';
     static firstLoad = true;
-    options = {};
+    options = defaults;
     id = 0;
     element = null;
-    constructor(option = {}) {
+    constructor(option) {
         this.init(option, ActionBar.instances.length);
         ActionBar.instances.push(this);
         if (ActionBar.instances.length === 1 && ActionBar.firstLoad === true) {

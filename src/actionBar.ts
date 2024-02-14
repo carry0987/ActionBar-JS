@@ -8,11 +8,11 @@ class ActionBar {
     private static instances: ActionBar[] = [];
     private static version: string = '__version__';
     private static firstLoad: boolean = true;
-    private options: ActionBarOption = {};
+    private options: ActionBarOption = defaults;
     private id: number = 0;
     private element: HTMLDivElement | null = null;
 
-    constructor(option: ActionBarOption = {}) {
+    constructor(option: Partial<ActionBarOption>) {
         this.init(option, ActionBar.instances.length);
         ActionBar.instances.push(this);
 
@@ -27,12 +27,12 @@ class ActionBar {
     /**
      * Initializes the plugin
      */
-    private init(option: ActionBarOption, id: number) {
+    private init(option: Partial<ActionBarOption>, id: number) {
         let tpl: string;
         let container: HTMLDivElement;
         let button: ActionBarButtons = {};
         this.id = id;
-        this.options = Utils.deepMerge({}, defaults, option);
+        this.options = Utils.deepMerge({} as ActionBarOption, defaults, option);
         tpl = Utils.getTemplate(id, this.options.template);
 
         // Inject stylesheet

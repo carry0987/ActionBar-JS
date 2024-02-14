@@ -7,12 +7,12 @@ export interface OnActionCallback {
 }
 
 export interface ActionBarOption {
-    countMsg?: string;
-    countPlaceholder?: string;
-    hideButton?: string[];
+    countMsg: string;
+    countPlaceholder: string;
+    hideButton: string[];
     template?: string | Element;
-    styles?: object;
-    customButton?: Array<{ name: string; icon: string; callback: Function }>;
+    styles: object;
+    customButton: Array<{ name: string; icon: string; callback: Function }>;
     onLoad?: OnLoadCallback;
     onClear?: OnActionCallback;
     onSelectAll?: OnActionCallback;
@@ -22,11 +22,11 @@ export interface ActionBarOption {
 }
 
 export interface ActionBarCallback {
-    onClear?: OnActionCallback;
-    onSelectAll?: OnActionCallback;
-    onRestore?: OnActionCallback;
-    onMove?: OnActionCallback;
-    onDelete?: OnActionCallback;
+    onClear: OnActionCallback;
+    onSelectAll: OnActionCallback;
+    onRestore: OnActionCallback;
+    onMove: OnActionCallback;
+    onDelete: OnActionCallback;
 }
 
 export interface ActionBarButtons {

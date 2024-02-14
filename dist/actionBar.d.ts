@@ -5,12 +5,12 @@ interface OnActionCallback {
     (button?: HTMLButtonElement): void;
 }
 interface ActionBarOption {
-    countMsg?: string;
-    countPlaceholder?: string;
-    hideButton?: string[];
+    countMsg: string;
+    countPlaceholder: string;
+    hideButton: string[];
     template?: string | Element;
-    styles?: object;
-    customButton?: Array<{
+    styles: object;
+    customButton: Array<{
         name: string;
         icon: string;
         callback: Function;
@@ -37,7 +37,7 @@ declare class ActionBar {
     private options;
     private id;
     private element;
-    constructor(option?: ActionBarOption);
+    constructor(option: Partial<ActionBarOption>);
     /**
      * Initializes the plugin
      */
