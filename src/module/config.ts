@@ -14,3 +14,11 @@ export const defaults: ActionBarOption = {
     onMove: undefined,
     onDelete: undefined
 };
+
+export const Action = {
+    CLEAR: 'clear',
+    SELECT_ALL: 'selectAll',
+    RESTORE: 'restore',
+    MOVE: 'move',
+    DELETE: 'delete'
+} as const;

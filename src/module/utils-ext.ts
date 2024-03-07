@@ -61,7 +61,7 @@ class Utils {
         </div>
         `;
         if (tpl) {
-            let template = getElem(tpl);
+            let template = (typeof tpl === 'string') ? getElem(tpl) : tpl;
             if (!template) throwError('Template not found');
             html = `<div style="display:none"><div class="action-bar action-bar-${id}">`;
             html += template.innerHTML;

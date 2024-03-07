@@ -1,7 +1,7 @@
 import Utils from './module/utils-ext';
-import { OnActionCallback, ActionBarOption, ActionBarCallback, ActionBarButtons, Action } from './interface/interfaces';
+import { OnActionCallback, ActionBarOption, ActionBarCallback, ActionBarButtons } from './interface/interfaces';
 import reportInfo from './module/report';
-import { defaults } from './module/config';
+import { defaults, Action } from './module/config';
 import './style/actionBar.css';
 
 class ActionBar {
@@ -149,7 +149,7 @@ class ActionBar {
         return this;
     }
 
-    public doAction(action: Action): ActionBar {
+    public doAction(action: typeof Action[keyof typeof Action]): ActionBar {
         switch (action) {
             case Action.CLEAR:
                 this.options?.onClear?.();
@@ -167,7 +167,6 @@ class ActionBar {
                 this.options?.onDelete?.();
                 break;
             default:
-                const exhaustiveCheck: never = action;
                 break;
         }
 
@@ -236,4 +235,5 @@ class ActionBar {
     static get DELETE() { return Action.DELETE; }
 }
 
-export default ActionBar;
+export { ActionBar as default, type Action };
+export * from './interface/interfaces';

@@ -32,11 +32,3 @@ export interface ActionBarCallback {
 export interface ActionBarButtons {
     [key: string]: HTMLButtonElement | null
 }
-
-export enum Action {
-    CLEAR = 'clear',
-    SELECT_ALL = 'selectAll',
-    RESTORE = 'restore',
-    MOVE = 'move',
-    DELETE = 'delete'
-}

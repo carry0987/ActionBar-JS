@@ -4,8 +4,12 @@ function throwError(message) {
 
 function getElem(ele, mode, parent) {
     // Return generic Element type or NodeList
-    if (typeof ele !== 'string')
+    if (typeof ele !== 'string') {
+        if (mode === 'all') {
+            return [ele];
+        }
         return ele;
+    }
     let searchContext = document;
     if (mode === null && parent) {
         searchContext = parent;
@@ -172,7 +176,7 @@ class Utils {
         </div>
         `;
         if (tpl) {
-            let template = getElem(tpl);
+            let template = (typeof tpl === 'string') ? getElem(tpl) : tpl;
             if (!template)
                 throwError('Template not found');
             html = `<div style="display:none"><div class="action-bar action-bar-${id}">`;
@@ -230,15 +234,6 @@ class Utils {
 Utils.setStylesheetId('actionbar-style');
 Utils.setReplaceRule('.action-bar', '.action-bar-');
 
-var Action;
-(function (Action) {
-    Action["CLEAR"] = "clear";
-    Action["SELECT_ALL"] = "selectAll";
-    Action["RESTORE"] = "restore";
-    Action["MOVE"] = "move";
-    Action["DELETE"] = "delete";
-})(Action || (Action = {}));
-
 const reportInfo = (vars, showType = false) => {
     if (showType === true) {
         console.log('Data Type : ' + typeof vars, '\nValue : ' + vars);
@@ -264,6 +259,13 @@ const defaults = {
     onRestore: undefined,
     onMove: undefined,
     onDelete: undefined
+};
+const Action = {
+    CLEAR: 'clear',
+    SELECT_ALL: 'selectAll',
+    RESTORE: 'restore',
+    MOVE: 'move',
+    DELETE: 'delete'
 };
 
 function styleInject(css, ref) {
@@ -298,7 +300,7 @@ styleInject(css_248z);
 
 class ActionBar {
     static instances = [];
-    static version = '2.0.1';
+    static version = '2.0.2';
     static firstLoad = true;
     options = defaults;
     id = 0;
