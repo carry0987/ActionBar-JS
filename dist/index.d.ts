@@ -33,6 +33,15 @@ interface ActionBarButtons {
     [key: string]: HTMLButtonElement | null;
 }
 
+type interfaces_ActionBarButtons = ActionBarButtons;
+type interfaces_ActionBarCallback = ActionBarCallback;
+type interfaces_ActionBarOption = ActionBarOption;
+type interfaces_OnActionCallback = OnActionCallback;
+type interfaces_OnLoadCallback = OnLoadCallback;
+declare namespace interfaces {
+  export type { interfaces_ActionBarButtons as ActionBarButtons, interfaces_ActionBarCallback as ActionBarCallback, interfaces_ActionBarOption as ActionBarOption, interfaces_OnActionCallback as OnActionCallback, interfaces_OnLoadCallback as OnLoadCallback };
+}
+
 declare const Action: {
     readonly CLEAR: "clear";
     readonly SELECT_ALL: "selectAll";
@@ -62,7 +71,7 @@ declare class ActionBar {
     updateCountNumber(count: number): ActionBar;
     enableButton(buttonName: string): ActionBar;
     disableButton(buttonName: string): ActionBar;
-    doAction(action: typeof Action[keyof typeof Action]): ActionBar;
+    doAction(action: (typeof Action)[keyof typeof Action]): ActionBar;
     onClear(callback: OnActionCallback): ActionBar;
     onSelectAll(callback: OnActionCallback): ActionBar;
     onRestore(callback: OnActionCallback): ActionBar;
@@ -77,4 +86,4 @@ declare class ActionBar {
     static get DELETE(): "delete";
 }
 
-export { Action, type ActionBarButtons, type ActionBarCallback, type ActionBarOption, type OnActionCallback, type OnLoadCallback, ActionBar as default };
+export { Action, ActionBar, interfaces as ActionBarInterface };

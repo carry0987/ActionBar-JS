@@ -8,7 +8,7 @@ import {
     deepMerge,
     generateRandom,
     injectStylesheet,
-    removeStylesheet,
+    removeStylesheet
 } from '@carry0987/utils';
 
 class Utils {
@@ -23,7 +23,7 @@ class Utils {
     static createElem = createElem;
     static throwError = throwError;
 
-    static getTemplate = function(id: number | string, tpl?: string | Element): string {
+    static getTemplate = function (id: number | string, tpl?: string | Element): string {
         id = id.toString();
         let html = `
         <div style="display:none">
@@ -61,7 +61,7 @@ class Utils {
         </div>
         `;
         if (tpl) {
-            let template = (typeof tpl === 'string') ? getElem(tpl) : tpl;
+            let template = typeof tpl === 'string' ? getElem(tpl) : tpl;
             if (!template) throwError('Template not found');
             html = `<div style="display:none"><div class="action-bar action-bar-${id}">`;
             html += template.innerHTML;
@@ -69,7 +69,7 @@ class Utils {
         }
 
         return html;
-    }
+    };
 
     static modifyButtonState(buttons: string | Array<string>, state: boolean, element: Element | null) {
         if (!element) return;

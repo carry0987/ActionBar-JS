@@ -1,8 +1,7 @@
-import Utils from './module/utils-ext';
-import { OnActionCallback, ActionBarOption, ActionBarCallback, ActionBarButtons } from './interface/interfaces';
-import reportInfo from './module/report';
-import { defaults, Action } from './module/config';
-import './style/actionBar.css';
+import { defaults, Action } from '@/component/config';
+import Utils from '@/module/utils-ext';
+import reportInfo from '@/module/report';
+import { OnActionCallback, ActionBarOption, ActionBarCallback, ActionBarButtons } from '@/interface/interfaces';
 
 class ActionBar {
     private static instances: ActionBar[] = [];
@@ -87,7 +86,8 @@ class ActionBar {
             if (!buttonElem) return;
             buttonElem.addEventListener('click', () => {
                 if (buttonElem.style.display === 'none') return;
-                const callbackName = `on${buttonName.charAt(0).toUpperCase() + buttonName.slice(1)}` as keyof ActionBarCallback;
+                const callbackName =
+                    `on${buttonName.charAt(0).toUpperCase() + buttonName.slice(1)}` as keyof ActionBarCallback;
                 this.options[callbackName]?.(buttonElem);
             });
         });
@@ -117,7 +117,7 @@ class ActionBar {
 
         return this;
     }
-    
+
     public hide(): ActionBar {
         if (this.element && this.element.parentNode) {
             (this.element.parentNode as HTMLElement).style.display = 'none';
@@ -149,7 +149,7 @@ class ActionBar {
         return this;
     }
 
-    public doAction(action: typeof Action[keyof typeof Action]): ActionBar {
+    public doAction(action: (typeof Action)[keyof typeof Action]): ActionBar {
         switch (action) {
             case Action.CLEAR:
                 this.options?.onClear?.();
@@ -204,13 +204,7 @@ class ActionBar {
     }
 
     public static getButtonList() {
-        return [
-            Action.CLEAR,
-            Action.SELECT_ALL,
-            Action.RESTORE,
-            Action.MOVE,
-            Action.DELETE
-        ];
+        return [Action.CLEAR, Action.SELECT_ALL, Action.RESTORE, Action.MOVE, Action.DELETE];
     }
 
     public destroy(): ActionBar {
@@ -219,7 +213,7 @@ class ActionBar {
             const container = Utils.getElem('.action-bar-container');
             if (container) container.removeChild(this.element.parentElement);
         }
-        const instanceIndex = ActionBar.instances.findIndex(inst => inst.id === this.id);
+        const instanceIndex = ActionBar.instances.findIndex((inst) => inst.id === this.id);
         if (instanceIndex > -1) {
             ActionBar.instances.splice(instanceIndex, 1);
         }
@@ -228,12 +222,21 @@ class ActionBar {
     }
 
     // Methods for external use
-    static get CLEAR() { return Action.CLEAR; }
-    static get SELECT_ALL() { return Action.SELECT_ALL; }
-    static get RESTORE() { return Action.RESTORE; }
-    static get MOVE() { return Action.MOVE; }
-    static get DELETE() { return Action.DELETE; }
+    static get CLEAR() {
+        return Action.CLEAR;
+    }
+    static get SELECT_ALL() {
+        return Action.SELECT_ALL;
+    }
+    static get RESTORE() {
+        return Action.RESTORE;
+    }
+    static get MOVE() {
+        return Action.MOVE;
+    }
+    static get DELETE() {
+        return Action.DELETE;
+    }
 }
 
-export { ActionBar as default, type Action };
-export * from './interface/interfaces';
+export { ActionBar };

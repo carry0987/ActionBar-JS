@@ -1,3 +1,25 @@
+const defaults = {
+    countMsg: 'Selected (:num) items',
+    countPlaceholder: '(:num)',
+    hideButton: [],
+    template: undefined,
+    styles: {},
+    customButton: [],
+    onLoad: undefined,
+    onClear: undefined,
+    onSelectAll: undefined,
+    onRestore: undefined,
+    onMove: undefined,
+    onDelete: undefined
+};
+const Action = {
+    CLEAR: 'clear',
+    SELECT_ALL: 'selectAll',
+    RESTORE: 'restore',
+    MOVE: 'move',
+    DELETE: 'delete'
+};
+
 function throwError(message) {
     throw new Error(message);
 }
@@ -5,9 +27,6 @@ function throwError(message) {
 function getElem(ele, mode, parent) {
     // Return generic Element type or NodeList
     if (typeof ele !== 'string') {
-        if (mode === 'all') {
-            return [ele];
-        }
         return ele;
     }
     let searchContext = document;
@@ -47,7 +66,30 @@ const replaceRule = {
     to: '.utils-'
 };
 function isObject(item) {
-    return typeof item === 'object' && item !== null && !Array.isArray(item);
+    return typeof item === 'object' && item !== null && !isArray(item);
+}
+function isArray(item) {
+    return Array.isArray(item);
+}
+function isEmpty(value) {
+    // Check for number
+    if (typeof value === 'number') {
+        return false;
+    }
+    // Check for string
+    if (typeof value === 'string' && value.length === 0) {
+        return true;
+    }
+    // Check for array
+    if (isArray(value) && value.length === 0) {
+        return true;
+    }
+    // Check for object
+    if (isObject(value) && Object.keys(value).length === 0) {
+        return true;
+    }
+    // Check for any falsy values
+    return !value;
 }
 function deepMerge(target, ...sources) {
     if (!sources.length)
@@ -59,9 +101,9 @@ function deepMerge(target, ...sources) {
                 const sourceKey = key;
                 const value = source[sourceKey];
                 const targetKey = key;
-                if (isObject(value)) {
+                if (isObject(value) || isArray(value)) {
                     if (!target[targetKey] || typeof target[targetKey] !== 'object') {
-                        target[targetKey] = {};
+                        target[targetKey] = isArray(value) ? [] : {};
                     }
                     deepMerge(target[targetKey], value);
                 }
@@ -117,14 +159,15 @@ function removeStylesheet(id = null) {
         styleElement.parentNode.removeChild(styleElement);
     }
 }
-function isEmpty(str) {
-    if (typeof str === 'number') {
-        return false;
-    }
-    return !str || (typeof str === 'string' && str.length === 0);
-}
 function generateRandom(length = 8) {
-    return Math.random().toString(36).substring(2, 2 + length);
+    let result = '';
+    const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charactersLength);
+        result += characters[randomIndex];
+    }
+    return result;
 }
 
 class Utils {
@@ -176,7 +219,7 @@ class Utils {
         </div>
         `;
         if (tpl) {
-            let template = (typeof tpl === 'string') ? getElem(tpl) : tpl;
+            let template = typeof tpl === 'string' ? getElem(tpl) : tpl;
             if (!template)
                 throwError('Template not found');
             html = `<div style="display:none"><div class="action-bar action-bar-${id}">`;
@@ -246,61 +289,9 @@ const reportInfo = (vars, showType = false) => {
     }
 };
 
-const defaults = {
-    countMsg: 'Selected (:num) items',
-    countPlaceholder: '(:num)',
-    hideButton: [],
-    template: undefined,
-    styles: {},
-    customButton: [],
-    onLoad: undefined,
-    onClear: undefined,
-    onSelectAll: undefined,
-    onRestore: undefined,
-    onMove: undefined,
-    onDelete: undefined
-};
-const Action = {
-    CLEAR: 'clear',
-    SELECT_ALL: 'selectAll',
-    RESTORE: 'restore',
-    MOVE: 'move',
-    DELETE: 'delete'
-};
-
-function styleInject(css, ref) {
-  if ( ref === void 0 ) ref = {};
-  var insertAt = ref.insertAt;
-
-  if (!css || typeof document === 'undefined') { return; }
-
-  var head = document.head || document.getElementsByTagName('head')[0];
-  var style = document.createElement('style');
-  style.type = 'text/css';
-
-  if (insertAt === 'top') {
-    if (head.firstChild) {
-      head.insertBefore(style, head.firstChild);
-    } else {
-      head.appendChild(style);
-    }
-  } else {
-    head.appendChild(style);
-  }
-
-  if (style.styleSheet) {
-    style.styleSheet.cssText = css;
-  } else {
-    style.appendChild(document.createTextNode(css));
-  }
-}
-
-var css_248z = "/* Action Bar */\n.action-bar-container {\n    position: fixed;\n    top: 0;\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n    z-index: 100;\n}\n\n.action-bar {\n    width: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    padding: 12px 12px;\n    color: white;\n    background-color: #4285f4;\n    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);\n    border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n}\n\n.action-bar .selected-count {\n    font-size: 14px;\n    margin-left: 20px;\n}\n\n.action-bar button {\n    margin: 0 10px;\n    background-color: transparent;\n    border: none;\n    color: #fff;\n    font-size: 14px;\n    cursor: pointer;\n}\n\n.action-bar .action-buttons {\n    display: flex;\n    background-color: transparent;\n}\n\n.action-bar .action-button {\n    width: 40px;\n    height: 40px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    flex-direction: column;\n    background-color: transparent;\n    border: none;\n    border-radius: 50%;\n    cursor: pointer;\n    transition: background-color 0.3s ease;\n}\n\n.action-bar .action-button:not([disabled]):hover {\n    background-color: #fff;\n    text-decoration: none;\n}\n\n.action-bar .action-button:not([disabled]) svg {\n    fill: #fff;\n}\n\n.action-bar .action-button:not([disabled]):hover svg {\n    fill: #4285f4;\n}\n\n.action-bar .action-button[disabled] {\n    background-color: rgba(255, 255, 255, 0.5);\n    cursor: not-allowed;\n}\n\n.action-bar .action-button[disabled] svg {\n    fill: #969696;\n}\n";
-styleInject(css_248z);
-
 class ActionBar {
     static instances = [];
-    static version = '2.0.2';
+    static version = '2.1.0';
     static firstLoad = true;
     options = defaults;
     id = 0;
@@ -460,13 +451,7 @@ class ActionBar {
         return this;
     }
     static getButtonList() {
-        return [
-            Action.CLEAR,
-            Action.SELECT_ALL,
-            Action.RESTORE,
-            Action.MOVE,
-            Action.DELETE
-        ];
+        return [Action.CLEAR, Action.SELECT_ALL, Action.RESTORE, Action.MOVE, Action.DELETE];
     }
     destroy() {
         Utils.removeStylesheet(this.id.toString());
@@ -475,18 +460,32 @@ class ActionBar {
             if (container)
                 container.removeChild(this.element.parentElement);
         }
-        const instanceIndex = ActionBar.instances.findIndex(inst => inst.id === this.id);
+        const instanceIndex = ActionBar.instances.findIndex((inst) => inst.id === this.id);
         if (instanceIndex > -1) {
             ActionBar.instances.splice(instanceIndex, 1);
         }
         return this;
     }
     // Methods for external use
-    static get CLEAR() { return Action.CLEAR; }
-    static get SELECT_ALL() { return Action.SELECT_ALL; }
-    static get RESTORE() { return Action.RESTORE; }
-    static get MOVE() { return Action.MOVE; }
-    static get DELETE() { return Action.DELETE; }
+    static get CLEAR() {
+        return Action.CLEAR;
+    }
+    static get SELECT_ALL() {
+        return Action.SELECT_ALL;
+    }
+    static get RESTORE() {
+        return Action.RESTORE;
+    }
+    static get MOVE() {
+        return Action.MOVE;
+    }
+    static get DELETE() {
+        return Action.DELETE;
+    }
 }
 
-export { ActionBar as default };
+var interfaces = /*#__PURE__*/Object.freeze({
+    __proto__: null
+});
+
+export { Action, ActionBar, interfaces as ActionBarInterface };

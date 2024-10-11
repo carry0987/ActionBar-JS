@@ -1,4 +1,4 @@
-import { ActionBarOption } from '../interface/interfaces';
+import { ActionBarOption } from '@/interface/interfaces';
 
 export const defaults: ActionBarOption = {
     countMsg: 'Selected (:num) items',

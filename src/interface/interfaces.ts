@@ -30,5 +30,5 @@ export interface ActionBarCallback {
 }
 
 export interface ActionBarButtons {
-    [key: string]: HTMLButtonElement | null
+    [key: string]: HTMLButtonElement | null;
 }
