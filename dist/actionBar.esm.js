@@ -291,7 +291,7 @@ const reportInfo = (vars, showType = false) => {
 
 class ActionBar {
     static instances = [];
-    static version = '2.1.0';
+    static version = '2.1.1';
     static firstLoad = true;
     options = defaults;
     id = 0;
